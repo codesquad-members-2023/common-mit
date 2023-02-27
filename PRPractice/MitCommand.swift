@@ -13,20 +13,26 @@ class MitCommand {
     var path = ""
     var fileList : [String] = []
     
+    
     init(fileManager: FileManager) {
         self.fileManager = fileManager
     }
     
     func run() {
-        inputPath()
+        firstCommand()
         arranging()
         printFileList()
     }
     
-    func inputPath () {
-        let url = readLine()
-        self.path = url ?? ""
+    func firstCommand () {
+        let rawCommand = readLine()!
+        if rawCommand.contains("list") {
+            if let path = rawCommand.range(of: "\\/.*\\/", options: .regularExpression) {
+                self.path = String(rawCommand[path])
+            }
+        }
     }
+    
     
     func arranging () {
         do {
