@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 public class InputView {
 
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private StringTokenizer st;
 
     public void inputCommand() throws IOException {
         String[] factors = br.readLine().split(" ");
