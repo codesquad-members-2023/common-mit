@@ -7,7 +7,22 @@ function run() {
     output: process.stdout,
   });
 
-  rl.on('line', userInput => {});
+  rl.on('line', userInput => {
+    mitCommand(userInput);
+  });
+}
+
+function mitCommand(inputCommand) {
+  const [command, type, directory] = inputCommand.split(' ');
+
+  if (command !== 'mit') return;
+  switch (type) {
+    case 'list':
+      break;
+
+    default:
+      break;
+  }
 }
 
 run();
