@@ -18,6 +18,10 @@ public class List {
             }
         }
 
+        if(index == 1) {
+            System.out.println("디렉토리에 파일이 없습니다.");
+        }
+
         System.out.println();
 
     }
