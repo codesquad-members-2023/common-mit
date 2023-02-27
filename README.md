@@ -268,7 +268,17 @@ $ git branch -d <브랜치 이름>  // 브랜치를 삭제함
 </details>
 
 <details>
-<summary>브랜치 워크플로</summary>
+<summary>리모트 브랜치</summary>
+
+`리모트 Refs`는 리모트 저장소에 있는 포인터인 레퍼런스다. 리모트 저장소에 있는 브랜치, 태그, 등등을 의미한다.  
+아래의 명령어로 모든 리모트 Refs를 조회할 수 있다.
+
+```text
+git ls-remote [remote] //  
+```
+
+
+
 
 
 </details>
