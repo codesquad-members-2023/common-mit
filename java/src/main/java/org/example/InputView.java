@@ -12,6 +12,7 @@ public class InputView {
     public static final String TYPE_ERROR = "정확한 명령어가 아닙니다.";
     public static final String DIRECTORY_PATH_ERROR = "정확한 directory 주소가 아닙니다.";
     public static final String COMMAND_FORMAT = "mit .+ /.+(/.+)*";
+    public static final String DELIMITER_SPACE = " ";
     private final Scanner scanner = new Scanner(System.in);
 
     public Command requestCommand() {
@@ -26,7 +27,7 @@ public class InputView {
             return requestCommand();
         }
 
-        String[] commandParts = commandAndPath.split(" ");
+        String[] commandParts = commandAndPath.split(DELIMITER_SPACE);
 
         String command = commandParts[1];
         if (!isRightCommandType(command)) {
