@@ -1,11 +1,23 @@
 package command;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Hash {
+
+
+    public byte[] readFileContent(File file) throws IOException {
+        byte[] byteFile = null;
+        byteFile = Files.readAllBytes(file.toPath());
+
+        return byteFile;
+    }
 
     public String makeSHA_256(byte[] fileContent) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
