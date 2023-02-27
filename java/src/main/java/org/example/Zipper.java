@@ -7,13 +7,13 @@ import java.io.File;
 
 public class Zipper {
 
-    public static void zipFile(File file) {
+    public static File zipFile(File file) {
+        String pathname = file.getPath() + ".z";
         if (file.isFile()) {
-            packEntry(file, new File(file.getPath() + ".z"));
+            packEntry(file, new File(pathname));
         } else if (file.isDirectory()) {
-            pack(file, new File(file.getPath() + ".z"));
+            pack(file, new File(pathname));
         }
-
+        return new File(pathname);
     }
-
 }

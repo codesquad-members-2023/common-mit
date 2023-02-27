@@ -13,47 +13,35 @@ public class Mit {
 
 
     public List<String> listOfPath(File dir) {
-        return executeCommand(dir, listCommandMapper());
+        return executeCommand(listCommandMapper()).apply(dir);
     }
 
     public List<String> hashOfPath(File dir) {
-        return executeCommand(dir, hashCommandMapper());
+        return executeCommand(hashCommandMapper()).apply(dir);
     }
 
-    public List<String> executeCommand(File dir, Function<? super File, ? extends String> mapper) {
-        File[] files = dir.listFiles();
-        if (files == null) {
-            System.out.println("파일이 없습니다.");
-            return Collections.emptyList();
-        }
-        return executeCommandExistFiles(files, mapper);
+    public List<String> zlibOfPath(File dir) {
+        return executeCommand(zlibCommandMapper()).apply(dir);
     }
 
-    private List<String> executeCommandExistFiles(File[] files, Function<? super File, ? extends String> mapper) {
-        return Arrays.stream(files)
+    private Function<File, List<String>> executeCommand(Function<? super File, ? extends String> mapper) {
+        return dir -> {
+            File[] files = dir.listFiles();
+            if (files == null) {
+                System.out.println("파일이 없습니다.");
+                return Collections.emptyList();
+            }
+            return executeCommandExistFiles(mapper).apply(files);
+        };
+    }
+
+    private Function<File[], List<String>> executeCommandExistFiles(Function<? super File, ? extends String> mapper) {
+        return files -> Arrays.stream(files)
             .filter(File::isFile)
             .map(mapper)
             .collect(Collectors.toList());
     }
 
-    public List<String> zlibOfPath(File dir) {
-        File[] files = dir.listFiles();
-        if (files == null) {
-            System.out.println("파일이 없습니다.");
-            return Collections.emptyList();
-        }
-        zipEachFileOfFiles(files);
-
-        return listOfPath(dir).stream()
-            .filter(s -> s.split(" ")[0].endsWith(".z"))
-            .collect(Collectors.toList());
-    }
-
-    private static void zipEachFileOfFiles(File[] files) {
-        for (File file : files) {
-            Zipper.zipFile(file);
-        }
-    }
 
     private static Function<? super File, ? extends String> listCommandMapper() {
         return file -> file.getName() + " " + (file.length()) + "byte";
@@ -61,5 +49,10 @@ public class Mit {
 
     private static Function<? super File, ? extends String> hashCommandMapper() {
         return file -> file.getName() + " = " + Hashing.sha256().hashString(file.getName(), StandardCharsets.UTF_8);
+    }
+
+    public static Function<? super File, ? extends String> zlibCommandMapper() {
+        return file -> listCommandMapper()
+            .apply(Zipper.zipFile(file));
     }
 }
