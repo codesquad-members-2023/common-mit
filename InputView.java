@@ -13,6 +13,8 @@ public class InputView {
     public void inputCommand() throws IOException {
         String[] factors = br.readLine().split(" ");
 
+        validCommandFactors(factors);
+
         switch (factors[1]) {
             case "list":
                 // 디렉토리의 파일 목록 탐색
@@ -22,6 +24,17 @@ public class InputView {
             case "zlib":
                 // 디렉토리에 속한 각 파일들을 zlib으로 압축하여 저장
             default:
+        }
+    }
+
+    public void validCommandFactors(String[] factors) {
+        exit(factors);
+    }
+
+    public void exit(String[] factors) {
+        if(factors[0].equals("exit")) {
+            System.out.println("프로그램을 종료합니다.");
+            System.exit(0);
         }
     }
 
