@@ -1,4 +1,6 @@
-import java.io.File;
+import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class MitSystem {
@@ -14,8 +16,48 @@ public class MitSystem {
         }
     }
 
-    public void printHashOfFiles(String directoryPath) {
+    public void printHashOfFiles(String directoryPath) throws NullPointerException {
+        try {
+            File[] files = new File(directoryPath).listFiles();
+            for (File file : files) {
+                if (file.isHidden() || file.isDirectory()) {
+                    continue;
+                }
+                String hashData = getHashCode(file);
+                System.out.printf("%s %s\n", file.getName(), hashData);
+            }
+        } catch (NullPointerException e) {
+            throw new NullPointerException("올바른 경로가 아닙니다.");
+        }
+    }
 
+    private String getHashCode(File file) {
+        try {
+            // SHA-256 다이제스트 객체
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            // 파일로부터 스트림 읽기
+            InputStream is = new FileInputStream(file);
+            // 해쉬 변환된 문자열 담을 객체
+            StringBuilder sb = new StringBuilder();
+            // 데이터 담을 바이트배열
+            byte[] bytes = new byte[1024];
+
+            int nread = 0;
+            while ((nread = is.read(bytes)) != -1) {
+                md.update(bytes, 0, nread);
+            }
+            byte[] hash = md.digest();
+
+            for (byte data : hash) {
+                String hexString = String.format("%02x", data);
+                sb.append(hexString);
+            }
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void compressFiles(String directoryPath) {
