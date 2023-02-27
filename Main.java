@@ -47,11 +47,11 @@ public class Main {
             for (byte b : hash) {
                 String hex = Integer.toHexString(0xff & b);
                 if (hex.length() == 1) {
-                    hexString.append('0');
+                    hexString.append('0'); // 16진수로 출력 위해 한자리 수일 경우 앞에 0붙여줌
                 }
                 hexString.append(hex);
             }
-            System.out.println(hexString);
+            System.out.println(file.getName() + " = " + hexString);
         }
     }
 
@@ -73,7 +73,7 @@ public class Main {
     private static void printList(String path) {
         File[] files = getFiles(path);
         for (File file : files) {
-            System.out.println(file.getName() + " - " + file.length() / 1024 + "KB"); // KB단위로 출력
+            System.out.println(file.getName() + " " + file.length() / 1024 + "KB"); // KB단위로 출력
         }
     }
 
