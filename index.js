@@ -8,11 +8,11 @@ function run() {
   });
 
   rl.on('line', userInput => {
-    mitCommand(userInput);
+    mitCommand(userInput, rl);
   });
 }
 
-function mitCommand(inputCommand) {
+function mitCommand(inputCommand, rl) {
   const [command, type, directory] = inputCommand.split(' ');
 
   if (command !== 'mit') return;
@@ -24,6 +24,7 @@ function mitCommand(inputCommand) {
     default:
       break;
   }
+  rl.close();
 }
 
 function getFileInfo(directory) {
