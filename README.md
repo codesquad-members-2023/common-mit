@@ -110,3 +110,21 @@ $ git remote -v //저장소 확인
     **main Branch는 원본 유지. 합격.**
     
     (master Branch 지우고 그냥 main에 원본 저장하기로 했다.)
+
+### Push후 PR
+
+깃헙 저장소 상단을 보면 **Compare & pull request** 버튼이 활성화되어 있는 것을 볼 수 있다.
+
+상단에 버튼을 클릭하고, PR 메세지를 작성하고 **Cretae pull request** 버튼을 누르면 풀 리퀘스트를 생성하게 된다.
+
+![스크린샷 2023-02-27 오후 10.30.02.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a88bef61-7190-4c75-b44f-6cb959678007/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-02-27_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_10.30.02.png)
+
+**눌러.**
+
+### 미션 구현
+
+- 해당 디렉토리의 파일목록 출력
+    
+    **FileManager**
+    
+    swift에서는 파일들을 다루기 위한 클래스로 **FileManager**를 제공하고 있다.FileManager는 **FileManager.default** 인스턴스를 기본으로 제공하며, 원하면 자신만의 인스턴스를 새롭게 생성할 수도 있다.파일시스템의 파일 혹은 디렉토리들은 모두 경로를 가지고 있어 URL 혹은 String 데이터 타입을 통해 파일에 접근할 수 있도록 해준다.
