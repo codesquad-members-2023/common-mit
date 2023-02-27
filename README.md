@@ -174,4 +174,11 @@ git commit -am "커밋메세지"
 - 주의: 최초 한번은 add 를 통해 tracked 상태가 되었어야 함
 - 추적하고 싶지 않은 파일이 실수로 추적되는 사고를 방지할 수 있다
 
+## remote origin/upstream 잘못했을 때
+
+    git remote rm origin/upstream 
+
+해주고 다시 
+
+    git remote add -t gunoc upstream https://github.com/codesquad-members-2023/common-mit.git   
 
