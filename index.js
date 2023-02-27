@@ -18,11 +18,16 @@ function mitCommand(inputCommand) {
   if (command !== 'mit') return;
   switch (type) {
     case 'list':
+      getFileInfo(directory);
       break;
 
     default:
       break;
   }
+}
+
+function getFileInfo(directory) {
+  const filelist = fs.readdirSync(directory);
 }
 
 run();
