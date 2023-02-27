@@ -29,6 +29,12 @@ function mitCommand(inputCommand) {
 function getFileInfo(directory) {
   const regex = /^[^.].*[^.]$/;
   const filelist = fs.readdirSync(directory);
+  const filteredFiles = filelist.filter(file => regex.test(file));
+  filteredFiles.forEach(file => {
+    const stats = fs.statSync(`${directory}/${file}`);
+    const fileName = file.split('.')[0];
+    const fileSize = stats.size;
+  });
 }
 
 run();
