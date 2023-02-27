@@ -20,3 +20,13 @@ mit hash /Users/{사용자}/{경로}/Work/Masters
 a.java 3a1bb1123bbe124f3e0b3a4f2fe5334dac0bd582a24ccecd314a62f9c840c9ec
 
 ```
+
+# 3. 명령어 z
+```
+경로 입력 : 
+mit z /Users/{사용자}/{경로}/Work/Masters
+a.java.z 0KB
+.DS_Store.z 0KB
+무제.txt.z 4KB
+
+```
