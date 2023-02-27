@@ -3,6 +3,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.zip.DeflaterOutputStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,17 +18,48 @@ public class Main {
 
         if(tokens[0].equals("mit")) {
             if(tokens[1].equals("list")) {
-                printList(tokens[2]);
+                printList(getFiles(tokens[2]));
             }
             if(tokens[1].equals("hash")) {
                 try {
                     printHash(tokens[2]);
                 } catch (Exception e) {
-                    System.out.println("오류 발생");
+                    e.printStackTrace();
+                }
+            }
+            if(tokens[1].equals("zlib")) {
+                try {
+                    printCompress(tokens[2]);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
 
+    }
+
+    private static void printCompress(String path) throws IOException {
+        File[] files = getFiles(path);
+        File[] zipFiles = new File[files.length];
+        int idx = 0;
+
+        for(File file : files) {
+            InputStream inputStream = new FileInputStream(file);
+            File zipFile = new File(file.getName() + ".z");
+            OutputStream outputStream = new DeflaterOutputStream(
+                    new FileOutputStream(zipFile));
+
+            byte[] buffer = new byte[8192];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) { // 버퍼형식으로 읽어와서 압축
+                outputStream.write(buffer, 0, length);
+            }
+            zipFiles[idx++] = zipFile;
+            inputStream.close();
+            outputStream.close();
+        }
+
+        printList(zipFiles);
     }
 
     private static void printHash(String path) throws NoSuchAlgorithmException, IOException {
@@ -70,10 +102,9 @@ public class Main {
                 .toArray(File[]::new); // 파일만 배열에 담음.
     }
 
-    private static void printList(String path) {
-        File[] files = getFiles(path);
+    private static void printList(File[] files) {
         for (File file : files) {
-            System.out.println(file.getName() + " " + file.length() / 1024 + "KB"); // KB단위로 출력
+            System.out.println(file.getName() + " " + file.length() / 1024 + "KB"); // KB 단위로 출력
         }
     }
 
