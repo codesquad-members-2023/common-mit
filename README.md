@@ -65,9 +65,50 @@ Changes not staged for commit:
     modified:   CONTRIBUTING.md
 ```
 
+<br>
+
 > 중요
 > 위의 명령어는 위험한 명령어들이다. 원래 파일로 덮어 썼기 때문에 수정한 내용은 전부 사라진다.
 > 수정한 내용이 진짜 마음에 들지 않을 때만 사용하자.
+
+</details>
+
+<details>
+<summary>Git Alias</summary>
+명령을 완벽하게 입력하지 않으면 git 은 알아듣지 못한다. git 의 명령을 전부 입력하는 것이 귀찮다면 `git config`를 사용하여 각 명령의 Alias 을 쉽게 만들 수 있다.
+
+```text
+$ git config --global alias.co checkout
+$ git config --global alias.br branch
+$ git config --global alias.ci commit
+$ git config --global alias.st status
+```
+
+위의 설정을 통해, `git commit`대신 `git ci`만으로도 커밋을 할 수 있다.
+
+<br>
+
+이미 있는 명령을 새로운 명령으로 만들어 사용할 수도 있다.
+
+```text
+$ git config --global alias.unstage 'reset HEAD --'
+```
+
+아래 두 명령은 동일한 명령이다.
+
+```text
+$ git unstage fileA
+$ git reset HEAD -- fileA
+```
+
+<br>
+
+그리고 git의 명령어뿐만 아니라 외부 명령어도 실행할 수 있다. `!`를 제일 앞에 추가하면 외부 명령을 실행한다.  
+커스텀 스크립트를 만들어서 사용할 때 매우 유용하다. 아래 명령은 git visual 이라고 입력하면 gitk 가 실행된다.  
+
+```text
+$ git config --global alias.visual '!gitk'
+```
 
 </details>
 
