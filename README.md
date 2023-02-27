@@ -350,4 +350,9 @@ Switched to a new branch 'serverfix'
 
 이미 로컬에 존재하는 브랜치가 리모트의 특정 브랜치를 추적하게 하려면 git branch 명령에 `-u` 나 `--set-upstream-to`` 옵션을 붙여서 아래와 같이 설정한다.
 
+```text
+$ git branch -u origin/serverfix
+Branch serverfix set up to track remote branch serverfix from origin.
+```
+
 </details>
