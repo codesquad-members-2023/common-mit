@@ -6,67 +6,59 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.zeroturnaround.zip.ZipUtil;
 
 public class Mit {
 
+
+    public static final String LIST_COMMAND_DELIMITER = " ";
+    public static final String HASH_COMMAND_DELIMITER = " = ";
+    public static final String FILE_SIZE_UNIT = "byte";
+    public static final String NON_FILE_ERROR = "파일이 없습니다.";
+
     public List<String> listOfPath(File dir) {
-        File[] files = dir.listFiles();
-        if (files == null) {
-            System.out.println("파일이 없습니다.");
-            return Collections.emptyList();
-        }
-        return Arrays.stream(files)
-            .filter(File::isFile)
-            .map(Mit::makeFileListCommandFormat)
-            .collect(Collectors.toList());
+        return executeCommand(listCommandMapper()).apply(dir);
     }
 
     public List<String> hashOfPath(File dir) {
-        File[] files = dir.listFiles();
-        if (files == null) {
-            System.out.println("파일이 없습니다.");
-            return Collections.emptyList();
-        }
-        return Arrays.stream(files)
-            .filter(File::isFile)
-            .map(Mit::makeHashListCommandFormat)
-            .collect(Collectors.toList());
+        return executeCommand(hashCommandMapper()).apply(dir);
     }
 
     public List<String> zlibOfPath(File dir) {
-        File[] files = dir.listFiles();
-        if (files == null) {
-            System.out.println("파일이 없습니다.");
-            return Collections.emptyList();
-        }
-        for (File file : files) {
-            zipFile(file);
-        }
+        return executeCommand(zlibCommandMapper()).apply(dir);
+    }
 
-        return listOfPath(dir).stream()
-            .filter(s -> s.split(" ")[0].endsWith(".z"))
+    private Function<File, List<String>> executeCommand(Function<? super File, ? extends String> mapper) {
+        return dir -> {
+            File[] files = dir.listFiles();
+            if (files == null) {
+                System.out.println(NON_FILE_ERROR);
+                return Collections.emptyList();
+            }
+            return executeCommandExistFiles(mapper).apply(files);
+        };
+    }
+
+    private Function<File[], List<String>> executeCommandExistFiles(Function<? super File, ? extends String> mapper) {
+        return files -> Arrays.stream(files)
+            .filter(File::isFile)
+            .map(mapper)
             .collect(Collectors.toList());
-
-
     }
 
-    private static void zipFile(File file) {
-        if (file.isFile()) {
-            ZipUtil.packEntry(file, new File(file.getPath() + ".z"));
-        } else if (file.isDirectory()) {
-            ZipUtil.pack(file, new File(file.getPath() + ".z"));
-        }
 
+    private static Function<? super File, ? extends String> listCommandMapper() {
+        return file -> file.getName() + LIST_COMMAND_DELIMITER + (file.length()) + FILE_SIZE_UNIT;
     }
 
-    private static String makeFileListCommandFormat(File file) {
-        return file.getName() + " " + (file.length()) + "byte";
+    private static Function<? super File, ? extends String> hashCommandMapper() {
+        return file -> file.getName() + HASH_COMMAND_DELIMITER + Hashing.sha256()
+            .hashString(file.getName(), StandardCharsets.UTF_8);
     }
 
-    private static String makeHashListCommandFormat(File file) {
-
-        return file.getName() + " = " + Hashing.sha256().hashString(file.getName(), StandardCharsets.UTF_8);
+    public static Function<? super File, ? extends String> zlibCommandMapper() {
+        return file -> listCommandMapper()
+            .apply(Zipper.zipFile(file));
     }
 }
