@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
 public class Mit {
 
 
+    public static final String LIST_COMMAND_DELIMITER = " ";
+    public static final String HASH_COMMAND_DELIMITER = " = ";
+    public static final String FILE_SIZE_UNIT = "byte";
+    public static final String NON_FILE_ERROR = "파일이 없습니다.";
+
     public List<String> listOfPath(File dir) {
         return executeCommand(listCommandMapper()).apply(dir);
     }
@@ -28,7 +33,7 @@ public class Mit {
         return dir -> {
             File[] files = dir.listFiles();
             if (files == null) {
-                System.out.println("파일이 없습니다.");
+                System.out.println(NON_FILE_ERROR);
                 return Collections.emptyList();
             }
             return executeCommandExistFiles(mapper).apply(files);
@@ -44,11 +49,12 @@ public class Mit {
 
 
     private static Function<? super File, ? extends String> listCommandMapper() {
-        return file -> file.getName() + " " + (file.length()) + "byte";
+        return file -> file.getName() + LIST_COMMAND_DELIMITER + (file.length()) + FILE_SIZE_UNIT;
     }
 
     private static Function<? super File, ? extends String> hashCommandMapper() {
-        return file -> file.getName() + " = " + Hashing.sha256().hashString(file.getName(), StandardCharsets.UTF_8);
+        return file -> file.getName() + HASH_COMMAND_DELIMITER + Hashing.sha256()
+            .hashString(file.getName(), StandardCharsets.UTF_8);
     }
 
     public static Function<? super File, ? extends String> zlibCommandMapper() {
