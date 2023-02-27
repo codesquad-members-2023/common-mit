@@ -263,6 +263,7 @@ $ git branch -v             // 브랜치마다 마지막 커밋 메시지를 보
 $ git branch --merged       // Merge 된 브랜치를 보여줌 ( 이미 merge 된 브랜치이기 때문에 삭제해도 되는 브랜치이다)
 $ git branch --no-merged    // Merge 되지 않은 브랜치를 보여줌
 $ git branch -d <브랜치 이름>  // 브랜치를 삭제함
+$ git branch -vv            // 리모트 브랜치가 현재 어떻게 설정되어 있는 확인 
 ```
 
 </details>
@@ -270,15 +271,83 @@ $ git branch -d <브랜치 이름>  // 브랜치를 삭제함
 <details>
 <summary>리모트 브랜치</summary>
 
-`리모트 Refs`는 리모트 저장소에 있는 포인터인 레퍼런스다. 리모트 저장소에 있는 브랜치, 태그, 등등을 의미한다.  
-아래의 명령어로 모든 리모트 Refs를 조회할 수 있다.
-
+`리모트 Refs`는 리모트 저장소에 있는 포인터인 레퍼런스다. 리모트 저장소에 있는 브랜치, 태그, 등등을 의미한다. (커밋 객체의 주소를 의미하는 것 같다.)
+관련 명령어는 아래와 같다.
 ```text
-git ls-remote [remote] //  
+$ git ls-remote [remote] // 모든 리모트 Refs 를 조회할 수 있음
+$ git git remote show [remote] // 모든 리모트 브랜치와 그 정보를 보여줌  
 ```
 
+리모트 Refs가 있지만 보통은 리모트 트래킹 브랜치를 사용한다.
 
+<br>
 
+### 리모트 트래킹 브랜치란 무엇인가
 
+리모트 트래킹 브랜치는 리모트 브랜치를 추적하는 레퍼런스이며 브랜치다.  
+리모트 트래킹 브랜치는 로컬에 있지만 임의로 움직일 수 없다. 리모트 서버에 연결할 때마다 리모트의 브랜치 업데이트 내용에 따라서 자동으로 갱신될 뿐이다.  
+리모트 트래킹 브랜치는 일종의 북마크라고 할 수 있다. **리모트 저장소에 마지막으로 연결했던 순간에 브랜치가 무슨 커밋을 가리키고 있었는지를 나타낸다.**  
+
+<br>
+
+리모트 트래킹 브랜치를 최신화를 하기위해 아래의 명령어를 사용할 수 있다.
+
+```text
+$ git fetch [remote]
+```
+
+<br>
+
+### Push 하기
+
+로컬의 브랜치를 서버로 전송하려면 `쓰기 권한`이 있는 리모트 저장소에 Push 해야 한다. 로컬 저장소의 브랜치는 자동으로 리모트 저장소로 전송되지 않는다.  
+명시적으로 브랜치를 Push 해야 정보가 전송된다. 따라서 리모트 저장소에 전송하지 않고 로컬 브랜치에만 두는 비공개 브랜치를 만들 수 있다. 또 다른 사람과 협업하기 위해 토픽 브랜치만 전송할 수도 있다.  
+<br>
+
+`serverfix` 라는 브랜치를 다른 사람과 공유할 때도 브랜치를 처음 Push 하는 것과 같은 방법으로 Push 한다. 아래와 같이 `git push <remote> <branch>` 명령을 사용한다.
+```text
+$ git push origin serverfix
+Counting objects: 24, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (15/15), done.
+Writing objects: 100% (24/24), 1.91 KiB | 0 bytes/s, done.
+Total 24 (delta 2), reused 0 (delta 0)
+To https://github.com/schacon/simplegit
+ * [new branch]      serverfix -> serverfix
+```
+
+<br>
+
+### 브랜치 추적
+
+리모트 트래킹 브랜치를 로컬 브랜치로 Checkout 하면 자동으로 **트래킹(Tracking) 브랜치** 가 만들어진다 (트래킹 하는 대상 브랜치를 **Upstream 브랜치** 라고 부른다).  
+**트래킹 브랜치는 리모트 브랜치와 직접적인 연결고리가 있는 로컬 브랜치이다.** 트래킹 브랜치에서 `git pull` 명령을 내리면 리모트 저장소로부터 데이터를 내려받아 연결된 리모트 브랜치와 자동으로 Merge 한다.
+
+> 증요
+> 서버로부터 저장소를 Clone을 하면 Git은 자동으로 master 브랜치를 origin/master 브랜치의 트래킹 브랜치로 만든다.
+> 트래킹 브랜치를 직접 만들 수 있는데 리모트를 origin 이 아닌 다른 리모트로 할 수도 있고, 브랜치도 master 가 아닌 다른 브랜치로 추적하게 할 수 있다. 
+
+`git checkout -b <branch> <remote>/<branch>` 명령으로 간단히 트래킹 브랜치를 만들 수 있다.  
+위의 로컬 브랜치에서 `pull` 하거나 `push` 하면 자동으로 리모트 브랜치로 데이터를 가져오거나 보낸다.  
+
+<br>
+
+--track 옵션을 사용하여 로컬 브랜치 이름을 자동으로 생성할 수 있다.
+
+```text
+$ git checkout --track origin/serverfix
+Branch serverfix set up to track remote branch serverfix from origin.
+Switched to a new branch 'serverfix'
+```
+
+이 명령은 매우 자주 쓰여서 더 생략할 수 있다. 입력한 브랜치가 있는 (a) 리모트가 딱 하나 있고 (b) 로컬에는 없으면 Git은 트래킹 브랜치를 만들어 준다.
+
+```text
+$ git checkout serverfix
+Branch serverfix set up to track remote branch serverfix from origin.
+Switched to a new branch 'serverfix'
+```
+
+이미 로컬에 존재하는 브랜치가 리모트의 특정 브랜치를 추적하게 하려면 git branch 명령에 `-u` 나 `--set-upstream-to`` 옵션을 붙여서 아래와 같이 설정한다.
 
 </details>
