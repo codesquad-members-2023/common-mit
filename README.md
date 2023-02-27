@@ -10,6 +10,8 @@ CS16 공통 프로젝트 저장소
 <details>
 <summary>remote : 인터넷이나 네트워크 어딘가에 있는 저장소를 말한다.</summary>
 
+`git remote` 명령으로 현재 프로젝트에 등록된 리모트 저장소를 확인할 수 있다.
+
 ```text
 $ git clone https://github.com/schacon/ticgit
 Cloning into 'ticgit'...
@@ -24,7 +26,8 @@ origin
 ```
 > 저장소를 `Clone` 하면 `origin`이라는 이름으로 리모트 저장소가 자동으로 등록된다.
 
-`git remote` 명령으로 현재 프로젝트에 등록된 리모트 저장소를 확인할 수 있다.
+
+
 `-v` 옵션을 주어 단축이름과 URL을 함께 볼 수 있다.
 
 ```text
