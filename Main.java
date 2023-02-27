@@ -8,8 +8,6 @@ public class Main {
         Mit_List mit_list = new Mit_List();
         Mit_Hash mit_hash = new Mit_Hash();
         Mit_Z mit_z = new Mit_Z();
-        // "/Users/shindeokyong/Desktop/Work/Masters"
-
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("경로 입력 : ");
