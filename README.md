@@ -117,7 +117,8 @@ $ git remote -v //저장소 확인
 
 상단에 버튼을 클릭하고, PR 메세지를 작성하고 **Cretae pull request** 버튼을 누르면 풀 리퀘스트를 생성하게 된다.
 
-![스크린샷 2023-02-27 오후 10.30.02.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a88bef61-7190-4c75-b44f-6cb959678007/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-02-27_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_10.30.02.png)
+<img width="1114" alt="스크린샷 2023-02-27 오후 10 30 02" src="https://user-images.githubusercontent.com/88966578/221576975-ba8cff21-ccf7-4e68-9de2-6639ff2bc18a.png">
+
 
 **눌러.**
 
