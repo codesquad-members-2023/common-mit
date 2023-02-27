@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E40B1D0429ACC395000589A8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40B1D0329ACC395000589A8 /* main.swift */; };
+		E455FF5329ACD709006C5128 /* MitCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E455FF5229ACD709006C5128 /* MitCommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		E40B1D0029ACC395000589A8 /* PRPractice */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PRPractice; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40B1D0329ACC395000589A8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = main.swift; path = PRPractice/main.swift; sourceTree = "경로test"; };
+		E455FF5229ACD709006C5128 /* MitCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MitCommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				E40B1D0329ACC395000589A8 /* main.swift */,
+				E455FF5229ACD709006C5128 /* MitCommand.swift */,
 			);
 			path = PRPractice;
 			sourceTree = "<group>";
@@ -120,6 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E455FF5329ACD709006C5128 /* MitCommand.swift in Sources */,
 				E40B1D0429ACC395000589A8 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
