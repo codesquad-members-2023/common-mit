@@ -23,13 +23,16 @@ public class Terminal {
                 case "list" :
                     try {
                         mitSystem.printListOfFiles(commandFormat.getDirectoryPath());
-                        break;
                     } catch (NullPointerException e) {
                         System.out.println(e.getMessage());
                     }
-
+                    break;
                 case "hash" :
-                    mitSystem.printHashOfFiles(commandFormat.getDirectoryPath());
+                    try {
+                        mitSystem.printHashOfFiles(commandFormat.getDirectoryPath());
+                    } catch (NullPointerException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "zlib" :
                     mitSystem.compressFiles(commandFormat.getDirectoryPath());
