@@ -19,7 +19,7 @@ public class Hash {
         for(File file : files) {
             if (file.isFile()) {
                 String hash = makeSHA_256(readFileContent(file));
-                System.out.printf("%d. $s%n", index++, hash);
+                System.out.printf("%d. %s%n", index++, hash);
             }
         }
 
