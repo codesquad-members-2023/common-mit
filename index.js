@@ -27,6 +27,7 @@ function mitCommand(inputCommand) {
 }
 
 function getFileInfo(directory) {
+  const regex = /^[^.].*[^.]$/;
   const filelist = fs.readdirSync(directory);
 }
 
