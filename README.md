@@ -356,3 +356,12 @@ Branch serverfix set up to track remote branch serverfix from origin.
 ```
 
 </details>
+
+<details>
+<summary>Rebase</summary>
+
+Git 에서 한 브랜치에서 다른 브랜치로 합치는 방법으로는 두 가지가 있다. 하나는 Merger 이고 다른 하나는 Rebase 이다.
+
+
+
+</details>
