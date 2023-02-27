@@ -8,3 +8,5 @@
 import Foundation
 
 let filemanger = FileManager()
+let mitCommand = MitCommand(fileManager: filemanger)
+mitCommand.run()
