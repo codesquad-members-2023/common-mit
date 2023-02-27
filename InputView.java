@@ -29,6 +29,9 @@ public class InputView {
 
     public void validCommandFactors(String[] factors) {
         exit(factors);
+        if(!checkFactorsSize(factors)) {
+            throw new IllegalArgumentException("잘못된 명령어 입니다. 다시 입력해 주세요.");
+        }
     }
 
     public void exit(String[] factors) {
@@ -36,6 +39,13 @@ public class InputView {
             System.out.println("프로그램을 종료합니다.");
             System.exit(0);
         }
+    }
+
+    public boolean checkFactorsSize(String[] factors) {
+        if(factors.length != 3) {
+            return false;
+        }
+        return true;
     }
 
 }
