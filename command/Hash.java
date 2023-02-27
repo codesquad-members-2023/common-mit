@@ -30,14 +30,14 @@ public class Hash {
         System.out.println();
     }
 
-    public byte[] readFileContent(File file) throws IOException {
+    private byte[] readFileContent(File file) throws IOException {
         byte[] byteFile = null;
         byteFile = Files.readAllBytes(file.toPath());
 
         return byteFile;
     }
 
-    public String makeSHA_256(byte[] fileContent) throws NoSuchAlgorithmException {
+    private String makeSHA_256(byte[] fileContent) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(fileContent);
 
