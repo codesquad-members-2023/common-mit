@@ -11,6 +11,24 @@ import java.security.NoSuchAlgorithmException;
 
 public class Hash {
 
+    public void runHashCommand(String targetDirectory) throws IOException, NoSuchAlgorithmException {
+        File directory = new File(targetDirectory);
+        File[] files = directory.listFiles();
+
+        int index = 1;
+        for(File file : files) {
+            if (file.isFile()) {
+                String hash = makeSHA_256(readFileContent(file));
+                System.out.printf("%d. $s", index++, hash);
+            }
+        }
+
+        if(index == 1) {
+            System.out.println("디렉토리에 파일이 없습니다.");
+        }
+
+        System.out.println();
+    }
 
     public byte[] readFileContent(File file) throws IOException {
         byte[] byteFile = null;
