@@ -7,7 +7,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const isCommand = (input) => /^mit\s(list|hash|zlib)\s/.test(input);
+const isCommand = (input) => /^mit\s(list|hash|zlib)\s.+/.test(input);
 const isExit = (input) => input === 'exit';
 
 const printFileList = (dirPath) => {
@@ -26,7 +26,7 @@ const readlineHandler = (input) => {
       process.exit();
     }
     if (!isCommand(input)) {
-      throw new Error('mit으로 명령어를 다시 입력해주세요.\n');
+      throw new Error('mit으로 명령어를 다시 입력해주세요.');
     }
 
     const [command, type, dirPath] = input.split(' ');
@@ -47,7 +47,7 @@ const readlineHandler = (input) => {
 };
 
 const mit = () => {
-  rl.setPrompt('$ ');
+  rl.setPrompt('\n$ ');
   rl.prompt();
   rl.on('line', readlineHandler.bind(this));
 };
