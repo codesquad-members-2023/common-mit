@@ -81,4 +81,16 @@ class MitCommandImplTest {
         optionalList.ifPresentOrElse(mit.outputHash, ()-> Assertions.fail("테스트에 실패하였습니다."));
     }
 
+    @Test
+    @DisplayName("디렉토리안에 파일들을 각각 압축하여 출력하는지 테스트")
+    public void zlib_givenDirectoryName_whenMitZlib_thenZipFileList(){
+        //given
+        String directoryName = "./Work/Masters";
+        MitCommand mit = new MitCommandImpl();
+        //when
+        Optional<List<File>> optionalList = mit.zlib(directoryName);
+        //then
+        optionalList.ifPresentOrElse(mit.outputList, ()-> Assertions.fail("테스트에 실패하였습니다."));
+    }
+
 }
