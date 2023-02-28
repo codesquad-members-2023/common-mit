@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,12 +12,11 @@ public class Mit {
     public void run() throws IOException, NoSuchAlgorithmException {
         boolean running = true;
         while (running) {
-            String input = inputView.getInput();
-            String[] inputs = input.split(" ");
-            String command = inputs[1];
+            List<String> commandAndPath = parse();
+            String command = commandAndPath.get(0);
             String path = "";
-            if (inputs.length == 3) {
-                path = inputs[2];
+            if (commandAndPath.size() == 2) {
+                path = commandAndPath.get(1);
             }
             switch (command) {
                 case "list":
@@ -40,24 +36,23 @@ public class Mit {
         }
     }
 
-    private void list(String path) {
-        File directory = new File(path);
-        File[] files = directory.listFiles();
-
-        if (files == null) {
-            System.out.println("해당 경로에 파일이 존재하지 않습니다.");
-            return;
+    private List<String> parse() throws IOException {
+        List<String> commandAndPath = new ArrayList<>();
+        String input = inputView.getInput();
+        String[] inputs = input.split(" ");
+        commandAndPath.add(inputs[1]);
+        if (inputs.length == 3) {
+            commandAndPath.add(inputs[2]);
         }
-
-        for (File file : files) {
-            String filename = file.getName();
-            long fileSize = file.length() / 1024; // kilobyte
-            System.out.println(filename + " " + fileSize + "KB");
-        }
-        System.out.println();
+        return commandAndPath;
     }
 
-    private void hash(String path) throws NoSuchAlgorithmException, IOException {
+    private void list(String path) {
+        File[] files = getFiles(path);
+        print(files);
+    }
+
+    private File[] getFiles(String path) {
         File directory = new File(path);
         File[] files = directory.listFiles();
 
@@ -66,9 +61,41 @@ public class Mit {
                 throw new FileNotFoundException("해당 경로에 파일이 존재하지 않습니다.");
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
-                return;
             }
         }
+        return files;
+    }
+
+    private File[] getFiles(String path, FilenameFilter filter) {
+        File directory = new File(path);
+        File[] files = directory.listFiles(filter);
+
+        if (files == null) {
+            try {
+                throw new FileNotFoundException("해당 경로에 조건에 맞는 파일이 존재하지 않습니다.");
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return files;
+    }
+
+    private void print(File[] files) {
+        for (File file : files) {
+            String filename = file.getName();
+            long fileSize = file.length();
+            if (fileSize >= 1024) {
+                fileSize /= 1024; // kilobyte
+                System.out.println(filename + " " + fileSize + "KB");
+            } else {
+                System.out.println(filename + " " + fileSize + "Byte");
+            }
+        }
+        System.out.println();
+    }
+
+    private void hash(String path) throws NoSuchAlgorithmException, IOException {
+        File[] files = getFiles(path);
 
         final MessageDigest digest = MessageDigest.getInstance("SHA-256");
         for (File file : files) {
@@ -87,19 +114,8 @@ public class Mit {
     }
 
     private void zlib(String path) throws IOException {
-        File directory = new File(path);
-        File[] files = directory.listFiles();
+        File[] files = getFiles(path);
 
-        if (files == null) {
-            try {
-                throw new FileNotFoundException("해당 경로에 파일이 존재하지 않습니다.");
-            } catch (FileNotFoundException e) {
-                System.out.println(e.getMessage());
-                return;
-            }
-        }
-
-        List<File> compressedFiles = new ArrayList<>();
         for (File file : files) {
             byte[] bytes = Files.readAllBytes(file.toPath());
             Deflater deflater = new Deflater();
@@ -114,23 +130,20 @@ public class Mit {
             for (int i = 0; i < compressedDataLength; i++) {
                 outputStream.write(outputBuffer[i]);
             }
-            compressedFiles.add(compressedFile);
 
             deflater.end();
             outputStream.flush();
             outputStream.close();
         }
 
-        for (File file : compressedFiles) {
-            String filename = file.getName();
-            long fileSize = file.length();
-            if (fileSize >= 1024) {
-                fileSize /= 1024; // kilobyte
-                System.out.println(filename + " " + fileSize + "KB");
-            } else {
-                System.out.println(filename + " " + fileSize + "Byte");
+        FilenameFilter filenameFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".z");
             }
-        }
-        System.out.println();
+        };
+
+        File[] compressedFiles = getFiles(path, filenameFilter);
+        print(compressedFiles);
     }
 }
