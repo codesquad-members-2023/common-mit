@@ -35,5 +35,5 @@ class MitCommandInputTest {
         //when and then
         Assertions.assertThatThrownBy(mitCommandInput::input);
     }
-
+    
 }
