@@ -13,6 +13,9 @@ rl.on('line', line => {
     const files = fs.readdirSync(directoryPath);
     for(const file of files) {
       const filePath = path.resolve(directoryPath, file);
+      const stats = fs.statSync(filePath);
+      const fileSize = (stats.size / 1000).toFixed(2);
+      console.log(`${file} ${fileSize}KB`);
     }
   }
   rl.close();
