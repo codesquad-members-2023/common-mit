@@ -13,7 +13,7 @@ public class MitInputView {
             String[] inputs = br.readLine().split(" ");
 
             if (!inputs[0].equals("mit")) {
-                System.out.println("zsh: command not found: " + inputs[0]);
+                MitOutputView.notFoundCmd(inputs[0]);
                 continue;
             }
 
@@ -39,7 +39,7 @@ public class MitInputView {
                     mit.printZlib(inputs[2]);
                     break;
                 default :
-                    System.out.println("mit: '" + cmd + "' is not a mit command. See 'mit -- help'.");
+                    MitOutputView.printMan(cmd);
                     break;
             }
         }
