@@ -304,7 +304,9 @@ $ git fetch [remote]
 명시적으로 브랜치를 Push 해야 정보가 전송된다. 따라서 리모트 저장소에 전송하지 않고 로컬 브랜치에만 두는 비공개 브랜치를 만들 수 있다. 또 다른 사람과 협업하기 위해 토픽 브랜치만 전송할 수도 있다.  
 <br>
 
-`serverfix` 라는 브랜치를 다른 사람과 공유할 때도 브랜치를 처음 Push 하는 것과 같은 방법으로 Push 한다. 아래와 같이 `git push <remote> <branch>` 명령을 사용한다.
+`serverfix` 라는 브랜치를 다른 사람과 공유할 때도 브랜치를 처음 Push 하는 것과 같은 방법으로 Push 한다.    
+아래와 같이 `git push <remote> <branch>` 명령을 사용하면, 새로운 리모트 브랜치가 생성된다.
+
 ```text
 $ git push origin serverfix
 Counting objects: 24, done.
