@@ -183,7 +183,26 @@ mit list /Work/Masters/
 ```
 
 - 우선 특정 디렉토리 내 파일을 모두 읽어오는 방법을 찾아본다 → nodejs ‘fs’ 모듈에 있는 `readdir` 메소드를 이용하니 지정한 경로에 있는 디렉토리의 모든 파일명들을 출력할 수 있었다.
+- readline 모듈을 이용해서 원하는 디렉토리 이름과 경로를 입력받을 수 있도록 한다.
 - 내가 원하는 디렉토리 경로를 설정할 수 있는 방법을 찾아본다.
+  - fs.readdir은 시작 경로로 `process.cwd()`를 이용한다고 한다. 현재 작업하고 있는 디렉토리에서 node에 들어가 `process.cwd()`를 입력하니 '/Users/silvertae/CodeSquad/CS16/CS16’ 와 같이 현재 디렉토리 경로가 출력되었다.
+  - 우선 list.js 프로그램을 실행한 위치를 기준으로 밖에 있는 폴더들은 ../[폴더명] 으로 읽어올 수 있었다. 상대경로로 경로를 정하는 것인데 절대경로로 경로를 정해야 할까? → path 모듈을 활용하자
+- path.resolve() 를 사용하면 오른쪽 인자부터 읽어가며 절대경로를 만든다. /folder_name 형태의 경로가 있으면 절대 경로로 인식해서 그 경로를 반환한다. 실제로 path.resolve(’/’)를 넣어 출력해보니 Users, dev, etc, home, opt 등 루트경로의 파일 이름이 출력되었다.
+
+  ```jsx
+  const realPath = path.resolve(`/Users/silvertae${inputPath}`);
+
+
+  // 위에 realPath를 이용해서 readdir 메소드의 path 인자로 사용하면 다음처럼 출력되었다
+  $ node list
+
+  > mit list /CodeSquad/CS16/CS16
+  > .git
+  > .gitignore
+  > README.md
+  > Work
+  > list.js
+  ```
 
 ## 📜 참고자료
 
@@ -196,3 +215,7 @@ mit list /Work/Masters/
 - [https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=tkdldjs35&logNo=221920644169](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=tkdldjs35&logNo=221920644169) (git 기초명령어와 branch)
 - [https://guides.codepath.com/websecurity/Cryptographic-Hash-Algorithms](https://guides.codepath.com/websecurity/Cryptographic-Hash-Algorithms) (SHA-1)
 - [https://antilog.tistory.com/8](https://antilog.tistory.com/8) (git commit id)
+
+```
+
+```

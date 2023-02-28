@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -8,14 +9,11 @@ const rl = readline.createInterface({
 
 rl.on('line', line => {
 	const command = line.split(' ');
-	const dirName = command[2];
-	const path = `../${dirName}`;
+	const inputPath = command[2];
 
-	console.log(__dirname);
-	console.log(__filename);
-	console.log(process.cwd());
+	const realPath = path.resolve(`/Users/silvertae${inputPath}`);
 
-	fs.readdir(path, (err, filelist) => {
+	fs.readdir(realPath, (err, filelist) => {
 		if (err) {
 			console.log(err);
 		} else {
