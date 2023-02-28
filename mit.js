@@ -32,6 +32,16 @@ rl.on('line', line => {
     }
   }
 
+  if(command === 'zlib') {
+    const files = fs.readdirSync(directoryPath);
+    for(const file of files) {
+      const gzip = zlib.createGzip();
+      const filePath = path.resolve(directoryPath, file);
+      const inputFile = fs.createReadStream(filePath);
+      const outputFile = fs.createWriteStream(filePath+'.z');
+      inputFile.pipe(gzip).pipe(outputFile);
+    }
+  }
 
   rl.close();
 });
