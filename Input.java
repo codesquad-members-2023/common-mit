@@ -11,7 +11,7 @@ public class Input {
         if (!inputs[0].equals("mit")) {
             throw new IOException("mit 명령어가 아닙니다.");
         }
-        if (inputs[1].equals("list") || inputs[1].equals("hash") || inputs[1].equals("zlib")) {
+        if (!(inputs[1].equals("list") || inputs[1].equals("hash") || inputs[1].equals("zlib"))) {
             throw new IOException("지원하지 않는 명령어입니다.");
         }
         List<String> input = new ArrayList<>();
