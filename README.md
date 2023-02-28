@@ -10,7 +10,7 @@ CS16 공통 프로젝트 저장소
 - [x] [git add](#git-add)
 - [x] [git commit](#git-commit)
 - [x] [git push](#git-push)
-- [ ] Pull Request 운영 방식
+- [x] [Pull Request 운영 방식](#Pull-Request-운영-방식)
 
 ## git
 - 소스코드를 효과적으로 관리하기 위해 개발된 `분산형 버전 관리 시스템`
