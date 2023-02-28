@@ -69,4 +69,16 @@ class MitCommandImplTest {
         Assertions.assertThat(optionalList.isEmpty()).isTrue();
     }
 
+    @Test
+    @DisplayName("디렉토리안에 파일들을 암호화하여 출력하는지 테스트")
+    public void hash_givenDirectoryName_whenMitHash_thenHashedFileList(){
+        //given
+        String directoryName = "./Work/Masters";
+        MitCommand mit = new MitCommandImpl();
+        //when
+        Optional<List<HashedFile>> optionalList = mit.hash(directoryName);
+        //then
+        optionalList.ifPresentOrElse(mit.outputHash, ()-> Assertions.fail("테스트에 실패하였습니다."));
+    }
+
 }
