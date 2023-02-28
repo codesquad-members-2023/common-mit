@@ -10,7 +10,10 @@ rl.prompt();
 rl.on('line', line => {
   const [mit, command, directoryPath] = line.split(' ');
   if(command === 'list') {
-    
+    const files = fs.readdirSync(directoryPath);
+    for(const file of files) {
+      const filePath = path.resolve(directoryPath, file);
+    }
   }
   rl.close();
 });
