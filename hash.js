@@ -13,10 +13,12 @@ function mitHash(dirPath) {
     // 파일 경로 생성
     const filePath = path.resolve(dirPath, file);
 
-    // sha256 해시 생성
-    const hash = crypto.createHash("sha256").update(filePath).digest("hex");
+      // sha256 해시 생성
+    if (path.extname(file) === '.js') {
+      const hash = crypto.createHash("sha256").update(filePath).digest("hex");
 
-    console.log(`${file} : ${hash}`);
+      console.log(`${file} : ${hash}`);
+    }
   });
 }
 
