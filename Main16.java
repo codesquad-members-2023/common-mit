@@ -1,9 +1,9 @@
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class Main16 {
     public static void main(String[] args) throws IOException {
@@ -23,6 +23,7 @@ public class Main16 {
                     hash(command[2]);
                     break;
                 case "zlib":
+                    zlib(command[2]);
                     break;
                 case "0":
                     break loof;
@@ -32,6 +33,46 @@ public class Main16 {
             }
             System.out.println();
         }
+    }
+
+    private static void zlib(String path) {
+        File dir = new File(path);
+        File[] files = dir.listFiles();
+        byte[] buffer = new byte[1024];
+
+        if(files == null) {
+            System.out.println("파일을 찾을 수 없습니다.");
+            return;
+        }
+
+        for (File file : files) {
+            if (!file.isFile()) {
+                continue; // skip if not a file
+            }
+
+            String inputFilePath = file.getAbsolutePath();
+            String outputFilePath = path + File.separator + file.getName() + ".z";
+
+            try (FileInputStream fis = new FileInputStream(inputFilePath);
+                 FileOutputStream fos = new FileOutputStream(outputFilePath);
+                 ZipOutputStream zos = new ZipOutputStream(fos)) {
+
+                ZipEntry zipEntry = new ZipEntry(file.getName());
+                zos.putNextEntry(zipEntry);
+
+                int len;
+
+                while ((len = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+
+                zos.closeEntry();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        print(dir);
     }
 
     private static void list(String path) {
@@ -48,7 +89,6 @@ public class Main16 {
             System.out.println(filename.getName() + " " + filename.length() / 1024 + "KB");
         }
     }
-
 
     private static void hash(String path) {
         File dir = new File(path);
@@ -77,5 +117,21 @@ public class Main16 {
             }
             System.out.println(filename.getName() + " = " + SHA);
         }
+    }
+
+    private static void print(File dir) {
+        File[] files = dir.listFiles();
+
+        if(files == null) {
+            System.out.println("파일을 찾을 수 없습니다.");
+            return;
+        }
+
+        for (File file : files) {
+            if(file.getName().endsWith(".z")) {
+                System.out.println(file.getName() + " " + file.length()/1024 + "KB" );
+            }
+        }
+
     }
 }
