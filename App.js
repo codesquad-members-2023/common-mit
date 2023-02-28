@@ -1,5 +1,9 @@
 import { createHash } from 'node:crypto';
+import { createReadStream, createWriteStream } from 'node:fs';
 import { readFile, readdir, stat } from 'node:fs/promises';
+import { pipeline } from 'node:stream';
+import { promisify } from 'node:util';
+import { createGzip } from 'node:zlib';
 import path from 'path';
 import readline from 'readline';
 
@@ -17,6 +21,7 @@ export class App {
       const [mit, command, directoryPath] = input.split(' ');
       if (command === 'list') this.list(directoryPath);
       if (command === 'hash') this.hash(directoryPath);
+      if (command === 'zlib') this.zlib(directoryPath);
     });
   }
 
@@ -53,5 +58,41 @@ export class App {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  async zlib(directoryPath) {
+    try {
+      const inputFiles = await readdir(directoryPath);
+      const outputFiles = await Promise.all(
+        inputFiles.map(async (file, index) => {
+          const inputFilePath = path.join(directoryPath, file);
+          const outputFilePath = await this.compressFile(inputFilePath);
+          return outputFilePath;
+        })
+      );
+      outputFiles.forEach(async (file, index) => {
+        try {
+          const stats = await stat(file);
+          console.log(
+            `${index + 1}. ${file} ${(stats.size / 1024).toFixed(2)}KB`
+          );
+        } catch (err) {
+          console.log(`Error getting file stats: ${err}`);
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async compressFile(filePath) {
+    const outputFilePath = `${filePath}.z`;
+    const pipe = promisify(pipeline);
+    await pipe(
+      createReadStream(filePath),
+      createGzip(),
+      createWriteStream(outputFilePath)
+    );
+    return outputFilePath;
   }
 }
