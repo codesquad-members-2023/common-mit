@@ -238,6 +238,12 @@ mit list /Work/Masters/
   const hash = crypto.createHash('sha256').update(buff).digest('hex');
   ```
 
+## 생각해 볼 점
+
+- git init을 했을때 ./git 이 생기는데 이 녀석은 어디서 온 걸까?
+- 미션에서 구현한 node 프로그램을 다른 사용자의 디렉토리에서도 똑같이 적용할 수 있게 하려면 경로를 어떻게 바꾸어야 할까? → os 모듈 `os.homedir()` 사용하기
+- Byte → KB 단위로 바꿔서 출력하려면 어떻게 해야할까?
+
 ## 📜 참고자료
 
 - [https://soojin.ro/review/cl-descriptions](https://soojin.ro/review/cl-descriptions) (좋은 CL 설명문 작성법)

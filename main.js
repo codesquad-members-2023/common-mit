@@ -15,10 +15,10 @@ rl.on('line', line => {
 		rl.close();
 		return;
 	}
-
-	if (line.split(' ')[0] === 'mit' && line.split(' ')[1] === 'list') {
+	const cmd = line.split(' ');
+	if (cmd[0] === 'mit' && cmd[1] === 'list') {
 		list(line);
-	} else if (line.split(' ')[0] === 'mit' && line.split(' ')[1] === 'hash') {
+	} else if (cmd[0] === 'mit' && cmd[1] === 'hash') {
 		hash(line);
 	} else {
 		console.log('올바른 명령어를 입력해주세요.');
