@@ -1,5 +1,7 @@
 import { readdir, readFile, stat } from "node:fs/promises";
+import { createReadStream, createWriteStream } from "node:fs";
 import { createHash } from "node:crypto";
+import { createGzip } from "node:zlib";
 
 class Mit {
   constructor() {}
@@ -40,7 +42,36 @@ class Mit {
   }
 
   // Compress each file in `dirname` and save with a `.z` extension.
-  zlib(dirname) {}
+  async zlib(dirname) {
+    try {
+      const files = await readdir(dirname);
+
+      return Promise.all(
+        files.map(async (file) => {
+          const fileName = file.split(".")[0];
+          const compressedFile = `${fileName}.z`;
+
+          const originalFileStream = createReadStream(`${dirname}/${file}`);
+          const compressedFileStream = createWriteStream(
+            `${dirname}/${compressedFile}`
+          );
+
+          await new Promise((resolve, reject) => {
+            originalFileStream
+              .pipe(createGzip())
+              .pipe(compressedFileStream)
+              .on("finish", resolve)
+              .on("error", reject);
+          });
+
+          const { size } = await stat(`${dirname}/${compressedFile}`);
+          return { name: fileName, size: `${size}B` };
+        })
+      );
+    } catch (err) {
+      return err;
+    }
+  }
 }
 
 export default Mit;
