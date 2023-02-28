@@ -19,3 +19,4 @@ function list(directory) {
   });
 }
 
+module.exports = { list };

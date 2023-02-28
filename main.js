@@ -1,4 +1,5 @@
 const readline = require("readline");
+const {list} = require('./mitList')
 
 function mitCommand(input) {
   const [command, directory] = input.split(" ").slice(1);
