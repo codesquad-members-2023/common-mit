@@ -7,25 +7,17 @@ const rl = readline.createInterface({
 	output: process.stdout,
 });
 
-rl.on('line', line => {
-	const command = line.split(' ');
-	const inputPath = command[2];
-	const realPath = path.resolve(`/Users/silvertae${inputPath}`);
-
-	fs.readdir(realPath, (err, filelist) => {
-		if (err) {
-			console.log(err);
-		} else {
-			filelist.forEach(file => {
-				fs.stat(`${realPath}/${file}`, (err, stats) => {
-					if (err) {
-						console.log(err);
-					} else {
-						console.log(`${file} (${stats.size})`);
-					}
-				});
-			});
+rl.on('line', async line => {
+	try {
+		const inputPath = line.split(' ')[2];
+		const realPath = path.resolve(`/Users/silvertae${inputPath}`);
+		const filelist = await fs.promises.readdir(realPath);
+		for (const file of filelist) {
+			const stats = await fs.promises.stat(`${realPath}/${file}`);
+			console.log(`${file} (${stats.size})`);
 		}
-	});
-	rl.close();
+		rl.close();
+	} catch (err) {
+		console.log(err);
+	}
 });
