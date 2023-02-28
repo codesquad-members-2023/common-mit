@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class MitCommandImpl implements MitCommand{
 
@@ -75,6 +77,46 @@ public class MitCommandImpl implements MitCommand{
 
     @Override
     public Optional<List<File>> zlib(String directoryName) {
-        return null;
+        if(directoryName == null){
+            System.out.printf("적절하지 않은 입력입니다. : %s", directoryName);
+            return Optional.empty();
+        }
+
+        File directory = new File(directoryName);
+        List<File> result = new ArrayList<>();
+
+        if(directory == null || !directory.isDirectory()){ // 디렉토리가 아닌 경우
+            System.out.printf("입력하신 디렉토리명은 디렉토리가 아닙니다. : %s%n", directoryName);
+            return Optional.empty();
+        }else if(notExistFiles(directory)){ // 디렉토리안에 파일이 존재하지 않는 경우
+            System.out.printf("디렉토리가 비어있습니다. : %s%n", directory.getName());
+            return Optional.empty();
+        }
+
+        for(File file : directory.listFiles()){
+            try {
+                ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(file.getPath()+".z"));
+                result.add(addFileToZip(file, zos));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return Optional.of(result);
+    }
+
+    private File addFileToZip(File file, ZipOutputStream zip){
+
+        String line = "";
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            zip.putNextEntry(new ZipEntry(file.getPath()));
+
+            while((line = br.readLine()) != null){
+                zip.write(line.getBytes(), 0, line.getBytes().length);
+            }
+            zip.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new File(file.getPath()+".z");
     }
 }

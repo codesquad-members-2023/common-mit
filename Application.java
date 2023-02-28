@@ -13,9 +13,11 @@ public class Application {
                 Optional<List<File>> optionalList = mitCommand.list(input.split(" ")[2]);
                 optionalList.ifPresent(MitCommand.outputList);
             }else if(input.startsWith("mit hash")){
-                mitCommand.hash(input.split(" ")[2]);
+                Optional<List<HashedFile>> optionalList = mitCommand.hash(input.split(" ")[2]);
+                optionalList.ifPresent(MitCommand.outputHash);
             }else if(input.startsWith("mit zlib")){
-                mitCommand.zlib(input.split(" ")[2]);
+                Optional<List<File>> optionalList = mitCommand.zlib(input.split(" ")[2]);
+                optionalList.ifPresent(MitCommand.outputList);
             }else{
                 System.out.println("프로그램을 종료합니다.");
                 break;
