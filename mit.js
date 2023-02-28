@@ -18,13 +18,7 @@ rl.question("명령어를 입력해주세요.\n", (answer) => {
 
   switch (command) {
     case "list":
-      fs.readdir(directoryPath, (err, files) => {
-        if (err) {
-          console.error(err);
-
-          return;
-        }
-
+      readDirectory(directoryPath, (files) => {
         files.forEach((file) => {
           const filePath = path.join(directoryPath, file);
 
@@ -46,3 +40,15 @@ rl.question("명령어를 입력해주세요.\n", (answer) => {
       console.log("정상적인 명령어가 아닙니다.");
   }
 });
+
+const readDirectory = (directoryPath, callback) => {
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      console.error(err);
+
+      return;
+    }
+
+    callback(files);
+  });
+};
