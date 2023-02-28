@@ -1,9 +1,8 @@
 package controller;
 
 import domain.command.Command;
-import domain.file.FileCompression;
-import domain.file.FileContent;
-import domain.hashcode.HashCode;
+import util.file.FileUtil;
+import util.hashcode.HashCodeUtil;
 import java.io.File;
 import java.util.function.Consumer;
 import view.InputView;
@@ -35,18 +34,13 @@ public class CommandController {
 
     private void hash(File[] files) {
         repeatFile(files, file -> {
-            FileContent fileContent = new FileContent(file);
-            HashCode hashCode = new HashCode(fileContent.getContent(), "SHA-256");
-            OutputView.printHash(file.getName(), hashCode.getCode());
+            byte[] hashCode = HashCodeUtil.getHashCode(FileUtil.getContent(file), "SHA-256");
+            OutputView.printHash(file.getName(), hashCode);
         });
     }
 
     private void zlib(File[] files) {
-        repeatFile(files, file -> {
-            FileCompression fileCompression = new FileCompression(file);
-            File zipFile = fileCompression.getZipFile();
-            OutputView.printFilesInfomation(zipFile);
-        });
+        repeatFile(files, file -> OutputView.printFilesInfomation(FileUtil.compress(file)));
     }
 
     private void repeatFile(File[] files, Consumer<File> consumer) {

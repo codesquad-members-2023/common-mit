@@ -1,17 +1,11 @@
-package domain.hashcode;
+package util.hashcode;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class HashCode {
+public class HashCodeUtil {
 
-    private final byte[] code;
-
-    public HashCode(byte[] fileContent, String algorithm) {
-        this.code = getSHA256HashCode(fileContent, algorithm);
-    }
-
-    private byte[] getSHA256HashCode(byte[] bytes, String algorithm)  {
+    public static byte[] getHashCode(byte[] bytes, String algorithm)  {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
             md.update(bytes);
@@ -19,9 +13,5 @@ public class HashCode {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    public byte[] getCode() {
-        return this.code;
     }
 }
