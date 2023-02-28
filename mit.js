@@ -5,6 +5,8 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+const crypto = require('crypto');
+
 rl.setPrompt('> ');
 rl.prompt();
 rl.on('line', line => {
@@ -18,5 +20,6 @@ rl.on('line', line => {
       console.log(`${file} ${fileSize}KB`);
     }
   }
+
   rl.close();
 });
