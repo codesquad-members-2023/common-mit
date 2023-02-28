@@ -6,6 +6,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 const crypto = require('crypto');
+const zlib = require('zlib');
 
 rl.setPrompt('> ');
 rl.prompt();
@@ -30,6 +31,7 @@ rl.on('line', line => {
       console.log(`${file} ${hash}`);
     }
   }
+
 
   rl.close();
 });
