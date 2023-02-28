@@ -15,8 +15,10 @@ function mitList(dirPath) {
   // 파일 정보 가져오기
   const stat = fs.statSync(filePath);
 
-  // 파일 크기와 이름 출력
-  console.log(`${file}: ${stat.size} bytes`);
+  // js 파일만 출력
+  if (path.extname(file) === '.js') {
+    console.log(`${file}: ${(stat.size / 1024).toFixed(1)} KB`);
+  }
 });
 }
 
