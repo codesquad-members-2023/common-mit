@@ -47,5 +47,6 @@ rl.on('line', line => {
     }
   } else {
     console.error('mit 명령어를 다시 입력하세요');
+    rl.prompt();
   }
 });
