@@ -1,4 +1,4 @@
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 public class MitCommandImpl implements MitCommand{
@@ -34,8 +34,28 @@ public class MitCommandImpl implements MitCommand{
     }
 
     @Override
-    public Optional<List<File>> hash(String directoryName) {
-        return null;
+    public Optional<List<HashedFile>> hash(String directoryName) {
+        File directory = new File(directoryName);
+        List<HashedFile> result = new ArrayList<>();
+        SHA256 sha256 = new SHA256();
+        for(File file : directory.listFiles()){
+            result.add(new HashedFile(file.getName(), sha256.encrypt(readFileContent(file))));
+        }
+        return Optional.of(result);
+    }
+
+    private String readFileContent(File file){
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            StringBuilder result = new StringBuilder();
+            String line = "";
+            while((line = br.readLine()) != null){
+                result.append(line).append("\n");
+            }
+            return result.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
