@@ -1,24 +1,21 @@
-const readline = require("readline");
+const fs = require("fs");
 
-function mitCommand(input) {
-  const command = input.split(" ").filter((_, index) => index === 1);
-
-  switch (command) {
-    case "list":
-      break;
-    case "hash":
-      break;
-    case "zlib":
-      break;
-  }
+function list(directory) {
+  fs.readdir(directory, (err, files) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    files.forEach((file) => {
+      const filePath = `${directory}/${file}`;
+      fs.stat(filePath, (err, stats) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log(`${file} (${(stats.size / 1024).toFixed(2)} KB)`);
+      });
+    });
+  });
 }
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-rl.question("$ ", (input) => {
-  console.log(input);
-  rl.close();
-});
