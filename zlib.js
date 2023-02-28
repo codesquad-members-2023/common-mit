@@ -46,4 +46,4 @@ function mitZlib(dirPath) {
   });
 }
 
-// mitZlib('./');
+export { mitZlib };

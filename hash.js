@@ -20,4 +20,4 @@ function mitHash(dirPath) {
   });
 }
 
-// mitHash('./');
+export { mitHash };

@@ -20,4 +20,4 @@ function mitList(dirPath) {
 });
 }
 
-// mitList('./')
+export { mitList };
