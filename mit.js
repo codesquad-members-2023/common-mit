@@ -8,5 +8,9 @@ const rl = readline.createInterface({
 rl.setPrompt('> ');
 rl.prompt();
 rl.on('line', line => {
-  
+  const [mit, command, directoryPath] = line.split(' ');
+  if(command === 'list') {
+    
+  }
+  rl.close();
 });
