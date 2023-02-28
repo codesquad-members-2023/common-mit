@@ -64,9 +64,9 @@ export class App {
     try {
       const inputFiles = await readdir(directoryPath);
       const outputFiles = await Promise.all(
-        inputFiles.map(async (file, index) => {
+        inputFiles.map((file, index) => {
           const inputFilePath = path.join(directoryPath, file);
-          const outputFilePath = await this.compressFile(inputFilePath);
+          const outputFilePath = this.compressFile(inputFilePath);
           return outputFilePath;
         })
       );
