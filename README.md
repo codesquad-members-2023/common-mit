@@ -204,6 +204,29 @@ mit list /Work/Masters/
   > list.js
   ```
 
+- 파일들의 사이즈를 출력하려면 어떻게 해야할까?
+
+  - `fs.stat()` 메소드를 사용했을때 결과로 리턴되는 <fs.Stats> 객체에 size 속성으로 파일의 크기가 들어있다.
+  - 따라서 원하는 디렉토리 내 모든 파일들의 사이즈를 하나씩 출력하기 위해서 `readdir()`를 사용한 결과로 리턴되는 filelist에 디렉토리내 모든 파일명이 배열로 담겨져 출력되는 것을 이용해서 각 파일경로마다 `stat()`을 반복해서 `stats.size`로 사이즈를 출력했다.
+
+  ```jsx
+  fs.readdir(realPath, (err, filelist) => {
+  	if (err) {
+  		console.log(err);
+  	} else {
+  		filelist.forEach(file => {
+  			fs.stat(`${realPath}/${file}`, (err, stats) => {
+  				if (err) {
+  					console.log(err);
+  				} else {
+  					console.log(`${file} (${stats.size})`);
+  				}
+  			});
+  		});
+  	}
+  });
+  ```
+
 ## 📜 참고자료
 
 - [https://soojin.ro/review/cl-descriptions](https://soojin.ro/review/cl-descriptions) (좋은 CL 설명문 작성법)

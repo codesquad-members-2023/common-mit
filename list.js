@@ -10,7 +10,6 @@ const rl = readline.createInterface({
 rl.on('line', line => {
 	const command = line.split(' ');
 	const inputPath = command[2];
-
 	const realPath = path.resolve(`/Users/silvertae${inputPath}`);
 
 	fs.readdir(realPath, (err, filelist) => {
@@ -18,10 +17,15 @@ rl.on('line', line => {
 			console.log(err);
 		} else {
 			filelist.forEach(file => {
-				console.log(file);
+				fs.stat(`${realPath}/${file}`, (err, stats) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(`${file} (${stats.size})`);
+					}
+				});
 			});
 		}
 	});
-
 	rl.close();
 });
