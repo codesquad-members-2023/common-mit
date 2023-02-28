@@ -21,7 +21,7 @@ struct ListOutput: MitOutput {
   var info: Int
   
   var description: String {
-    "\(fileName) \(info)KB"
+    "\(fileName) \(info)B"
   }
 }
 

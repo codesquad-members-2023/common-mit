@@ -8,18 +8,13 @@
 import Foundation
 
 extension URL {
-  var fileSize: Int? {
-    get throws {
-      guard self.isFileURL else { return nil }
-      let infos = try self.resourceValues(forKeys: [.fileSizeKey])
-      guard let sizeInByte = infos.fileSize else { return nil }
-      return sizeInByte
-    }
+  var fileByteSize: Int? {
+    guard let infos = try? self.resourceValues(forKeys: [.fileSizeKey]) else { return nil }
+    guard let sizeInByte = infos.fileSize else { return nil }
+    return sizeInByte
   }
   
   var data: Data? {
-    get throws {
-      try Data(contentsOf: self)
-    }
+    try? Data(contentsOf: self)
   }
 }

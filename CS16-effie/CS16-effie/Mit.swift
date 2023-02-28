@@ -13,17 +13,21 @@ final class Mit {
   }
   
   private static func getEntitiesURL(from path: String) throws -> [URL] {
-    let directory = NSURL.fileURL(withPath: path)
-    return try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+    let directoryURL = URL(filePath: path)
+    return try fileManager.contentsOfDirectory(
+      at: directoryURL,
+      includingPropertiesForKeys: nil,
+      options: [.skipsHiddenFiles]
+    )
   }
   
   private static func list(_ path: String) -> [ListOutput] {
     var outputs: [ListOutput] = []
     do {
       let entities = try getEntitiesURL(from: path)
-      outputs = try entities.compactMap { entity in
+      outputs = entities.compactMap { entity in
         let name = entity.lastPathComponent
-        guard let size = try entity.fileSize else { return nil }
+        guard let size = entity.fileByteSize else { return nil }
         return ListOutput(fileName: name, info: size)
       }
     } catch {
@@ -36,11 +40,35 @@ final class Mit {
     var outputs: [HashOutput] = []
     do {
       let entities = try getEntitiesURL(from: path)
-      outputs = try entities.compactMap { entity -> HashOutput? in
+      outputs = entities.compactMap { entity -> HashOutput? in
         let name = entity.lastPathComponent
-        guard let data = try entity.data else { return nil }
+        guard let data = entity.data else { return nil }
         let hash = data.hash
         return HashOutput(fileName: name, info: hash)
+      }
+    } catch {
+      print(error)
+    }
+    return outputs
+  }
+  
+  private static func zlib(_ path: String) -> [ListOutput] {
+    let pathURL = URL(filePath: path)
+    var outputs: [ListOutput] = []
+    
+    do {
+      let entities = try getEntitiesURL(from: path)
+      outputs = try entities.compactMap { (entity: URL) -> ListOutput? in
+        let fileName = entity.lastPathComponent
+        
+        let newFileName = fileName + ".z"
+        let newFileURL = pathURL.appending(component: newFileName)
+        
+        guard let zlib = entity.data?.zlib else { throw MitError.CannotCompress }
+        try zlib.write(to: newFileURL)
+        
+        guard let zlibSize = newFileURL.fileByteSize else { return nil }
+        return ListOutput(fileName: newFileName, info: zlibSize)
       }
     } catch {
       print(error)
@@ -52,7 +80,7 @@ final class Mit {
     switch command {
     case .list(let path): return list(path)
     case .hash(let path): return hash(path)
-    default: return []
+    case .zlib(let path): return zlib(path)
     }
   }
   
