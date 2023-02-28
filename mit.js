@@ -1,6 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
-const path = require('path');
+const crypto = require('crypto');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -19,6 +19,19 @@ const printFileList = (dirPath) => {
   });
 };
 
+const printFileHash = (dirPath) => {
+  const files = fs.readdirSync(dirPath);
+
+  files.forEach((file, index) => {
+    const hashSum = crypto.createHash('sha256');
+    hashSum.update(file);
+
+    const hex = hashSum.digest('hex');
+
+    console.log(`${index + 1}.${file}: ${hex}`);
+  });
+};
+
 const readlineHandler = (input) => {
   try {
     if (isExit(input)) {
@@ -34,6 +47,9 @@ const readlineHandler = (input) => {
     switch (type) {
       case 'list':
         printFileList(dirPath);
+        break;
+      case 'hash':
+        printFileHash(dirPath);
         break;
 
       default:
