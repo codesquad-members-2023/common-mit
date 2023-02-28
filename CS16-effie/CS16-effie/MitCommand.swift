@@ -7,18 +7,10 @@
 
 import Foundation
 
-enum MitCommand: CustomStringConvertible {
+enum MitCommand {
   case list(path: String)
   case hash(path: String)
   case zlib(path: String)
-  
-  var description: String {
-    switch self {
-    case .list(let p): return "list - \(p)"
-    case .hash(let p): return "hash - \(p)"
-    case .zlib(let p): return "zlib - \(p)"
-    }
-  }
   
   static func getCommand(from input: String) throws -> MitCommand {
     let elems = input.components(separatedBy: .whitespaces)

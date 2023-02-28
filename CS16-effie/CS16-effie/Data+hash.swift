@@ -13,4 +13,9 @@ extension Data {
     let hashDigest = SHA256.hash(data: self)
     return hashDigest.compactMap { String(format: "%02x", $0) }.joined()
   }
+  
+  var zlib: Data? {
+    guard let compressed = try? (self as NSData).compressed(using: .zlib) else { return nil }
+    return Data(compressed)
+  }
 }
