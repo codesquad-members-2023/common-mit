@@ -2,6 +2,8 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class MitSystem {
     public void printListOfFiles(String directoryPath) throws NullPointerException {
@@ -60,8 +62,34 @@ public class MitSystem {
         return null;
     }
 
-    public void compressFiles(String directoryPath) {
+    public void compressFiles(String directoryPath) throws Exception {
+        try {
+            File[] files = new File(directoryPath).listFiles();
+            for (File file : files) {
+                File zipFile = compressZip(file);
+                System.out.printf("%s %dKB\n", zipFile.getName(), zipFile.length() / 1000);
+            }
+        } catch (NullPointerException e) {
+            throw new NullPointerException("올바른 경로가 아닙니다.");
+        }
+    }
 
+    private File compressZip(File file) throws Exception {
+        byte[] buf = new byte[4096];
+        File zipFile = new File(file.getParent(), file.getName() + ".z");
+
+        try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
+            try (FileInputStream in = new FileInputStream(file)) {
+                ZipEntry ze = new ZipEntry(file.getName());
+                out.putNextEntry(ze);
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.closeEntry();
+            }
+        }
+        return zipFile;
     }
 
 }

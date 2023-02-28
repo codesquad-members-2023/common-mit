@@ -34,8 +34,12 @@ public class Terminal {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "zlib" :
-                    mitSystem.compressFiles(commandFormat.getDirectoryPath());
+                case "zip" :
+                    try {
+                        mitSystem.compressFiles(commandFormat.getDirectoryPath());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
             }
             System.out.println();
