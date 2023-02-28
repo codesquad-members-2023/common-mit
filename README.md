@@ -227,6 +227,17 @@ mit list /Work/Masters/
   });
   ```
 
+### 2단계. hash 명령어
+
+- Node의 내장 모듈로 암호화를 돕는 `crypto`라는 것이 있다는 것을 알게 되었다. `createHash`로 해시 값을 생성할 수 있는데, 여러 암호화 알고리즘 중에서 이번에는 SHA-256을 사용하였다.
+
+  ```jsx
+  // 경로상에 있는 파일의 내용을 buff에 저장
+  const buff = await fs.readFile(`${realPath}/${file}`);
+  // 해당 파일의 내용을 sha-256 알고리즘을 사용해서 해시값으로 만들어 리턴한다.
+  const hash = crypto.createHash('sha256').update(buff).digest('hex');
+  ```
+
 ## 📜 참고자료
 
 - [https://soojin.ro/review/cl-descriptions](https://soojin.ro/review/cl-descriptions) (좋은 CL 설명문 작성법)
@@ -238,7 +249,6 @@ mit list /Work/Masters/
 - [https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=tkdldjs35&logNo=221920644169](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=tkdldjs35&logNo=221920644169) (git 기초명령어와 branch)
 - [https://guides.codepath.com/websecurity/Cryptographic-Hash-Algorithms](https://guides.codepath.com/websecurity/Cryptographic-Hash-Algorithms) (SHA-1)
 - [https://antilog.tistory.com/8](https://antilog.tistory.com/8) (git commit id)
-
-```
-
-```
+- [https://stackoverflow.com/questions/2727167/how-do-you-get-a-list-of-the-names-of-all-files-present-in-a-directory-in-node-j](https://stackoverflow.com/questions/2727167/how-do-you-get-a-list-of-the-names-of-all-files-present-in-a-directory-in-node-j) (fs.readdir)
+- [https://stackoverflow.com/questions/42363140/how-to-find-the-size-of-the-file-in-node-js](https://stackoverflow.com/questions/42363140/how-to-find-the-size-of-the-file-in-node-js) (fs.stat)
+- [https://www.debugpointer.com/nodejs/create-sha256-hash-of-file-in-nodejs](https://www.debugpointer.com/nodejs/create-sha256-hash-of-file-in-nodejs) (createHash)
