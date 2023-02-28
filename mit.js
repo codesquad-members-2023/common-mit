@@ -7,8 +7,17 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const isCommand = (input) => /^mit\s(line|hash|zlib)\s/.test(input);
+const isCommand = (input) => /^mit\s(list|hash|zlib)\s/.test(input);
 const isExit = (input) => input === 'exit';
+
+const printFileList = (dirPath) => {
+  const files = fs.readdirSync(dirPath);
+
+  files.forEach((file, index) => {
+    const fileSize = Math.floor((fs.statSync(file).size / 1000) * 100) / 100;
+    console.log(`${index + 1}.${file} = ${fileSize}KB`);
+  });
+};
 
 const readlineHandler = (input) => {
   try {
@@ -21,6 +30,15 @@ const readlineHandler = (input) => {
     }
 
     const [command, type, dirPath] = input.split(' ');
+
+    switch (type) {
+      case 'list':
+        printFileList(dirPath);
+        break;
+
+      default:
+        break;
+    }
   } catch (error) {
     console.log(error.message);
   } finally {
