@@ -5,6 +5,8 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+const crypto = require('crypto');
+
 rl.setPrompt('> ');
 rl.prompt();
 rl.on('line', line => {
@@ -18,5 +20,16 @@ rl.on('line', line => {
       console.log(`${file} ${fileSize}KB`);
     }
   }
+
+  if(command === 'hash') {
+    const files = fs.readdirSync(directoryPath);
+    for(const file of files) {
+      const filePath = path.resolve(directoryPath, file);
+      const data = fs.readFileSync(filePath);
+      const hash = crypto.createHash("sha256").update(data).digest("hex");
+      console.log(`${file} ${hash}`);
+    }
+  }
+
   rl.close();
 });
