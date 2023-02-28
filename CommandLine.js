@@ -54,7 +54,13 @@ class CommandLine {
         }
         break;
       case "zlib":
-        // this.mit.zlib(dirname);
+        try {
+          (await this.mit.zlib(dirname)).forEach(({ name, size }) => {
+            console.log(`${name} ${size}`);
+          });
+        } catch (err) {
+          console.log(err);
+        }
         break;
       default:
         console.log(`Command not found: mit ${cmd}`);
