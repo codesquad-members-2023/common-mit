@@ -17,9 +17,9 @@ rl.on('line', line => {
 	}
 	const cmd = line.split(' ');
 	if (cmd[0] === 'mit' && cmd[1] === 'list') {
-		list(line);
+		list(cmd[2]);
 	} else if (cmd[0] === 'mit' && cmd[1] === 'hash') {
-		hash(line);
+		hash(cmd[2]);
 	} else {
 		console.log('올바른 명령어를 입력해주세요.');
 	}

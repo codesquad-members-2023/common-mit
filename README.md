@@ -242,7 +242,21 @@ mit list /Work/Masters/
 
 - git init을 했을때 ./git 이 생기는데 이 녀석은 어디서 온 걸까?
 - 미션에서 구현한 node 프로그램을 다른 사용자의 디렉토리에서도 똑같이 적용할 수 있게 하려면 경로를 어떻게 바꾸어야 할까? → os 모듈 `os.homedir()` 사용하기
+  `os.homedir()` 출력시 /Users/silvertae 가 출력되었다!
+  단 이 경우 기존 코드에서 `path.resolve` 부분을 `path.join`으로 바꾸어야 한다. 왜냐하면 resolve에서는 오른쪽에서 왼쪽으로 인자들을 읽어가며 ‘/’를 만나면 그 경로를 절대경로로 인식해서 바로 반환하기 때문이다.
+  ```jsx
+  // const realPath = path.resolve(`/Users/silvertae${dirPath}`);
+  // 기존 코드를 아래와 같이 변경한다.
+
+  const realPath = path.join(os.homedir(), dirPath`);
+  // -> /Users/silvertae/Work/Masters
+
+  const realPath = path.resolve(os.homedir(), dirPath);
+  // -> /Work/Masters
+  ```
 - Byte → KB 단위로 바꿔서 출력하려면 어떻게 해야할까?
+  [https://aspdotnet.tistory.com/2956](https://aspdotnet.tistory.com/2956) (bytesToSize 함수)
+- 결과에 자꾸 ‘>’ 표시가 첫 줄에 같이 나오는데 없앨수는 없을까?
 
 ## 📜 참고자료
 
