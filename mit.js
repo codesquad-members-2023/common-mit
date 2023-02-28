@@ -1,6 +1,7 @@
 const readline = require("readline");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -31,6 +32,19 @@ rl.question("명령어를 입력해주세요.\n", (answer) => {
 
             console.log(`${file} ${stats.size}Byte`);
           });
+        });
+      });
+
+      break;
+
+    case "hash":
+      readDirectory(directoryPath, (files) => {
+        files.forEach((file) => {
+          const filePath = path.join(directoryPath, file);
+          const fileData = fs.readFileSync(filePath, { encoding: "utf8" });
+          const sha256Hash = crypto.createHash("sha256").update(fileData).digest("hex");
+
+          console.log(`${file} = ${sha256Hash}`);
         });
       });
 
