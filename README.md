@@ -56,3 +56,29 @@
   
 https://charlie-dev.tistory.com/8
 ### 기능 3
+- 자바에서 제공하는 `ZipOutputStream`으로 압축. zlib을 사용하는 대신 zip을 사용했다.
+
+    ```java
+    private File compressZip(File file) throws Exception {
+        byte[] buf = new byte[4096];
+        File zipFile = new File(file.getParent(), file.getName() + ".z");
+    
+        try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
+            try (FileInputStream in = new FileInputStream(file)) {
+                ZipEntry ze = new ZipEntry(file.getName());
+                out.putNextEntry(ze);
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.closeEntry();
+            }
+        }
+        return zipFile;
+    }
+    ```
+
+  ![https://user-images.githubusercontent.com/85631282/221780170-9a8720ba-7f7b-476d-87b3-11cd2cb5ec23.png](https://user-images.githubusercontent.com/85631282/221780170-9a8720ba-7f7b-476d-87b3-11cd2cb5ec23.png)
+
+
+[https://kitty-geno.tistory.com/170](https://kitty-geno.tistory.com/170)

@@ -28,7 +28,7 @@ public class CommandFormat {
     }
 
     private void checkRightFormat(String commandLine) {
-        if (!commandLine.matches("mit (list |hash |zlib )\\S+")) {
+        if (!commandLine.matches("mit (list |hash |zip )\\S+")) {
             throw new IllegalArgumentException("잘못된 입력 형식입니다.");
         }
     }
