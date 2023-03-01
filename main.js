@@ -1,6 +1,7 @@
 const readline = require('readline');
 const { list } = require('./list');
 const { hash } = require('./hash');
+const { zlib } = require('./zlib');
 
 const rl = readline.createInterface({
 	input: process.stdin,
@@ -20,6 +21,8 @@ rl.on('line', line => {
 		list(cmd[2]);
 	} else if (cmd[0] === 'mit' && cmd[1] === 'hash') {
 		hash(cmd[2]);
+	} else if (cmd[0] === 'mit' && cmd[1] === 'zlib') {
+		zlib(cmd[2]);
 	} else {
 		console.log('올바른 명령어를 입력해주세요.');
 	}
