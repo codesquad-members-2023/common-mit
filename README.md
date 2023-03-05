@@ -238,12 +238,64 @@ mit list /Work/Masters/
   const hash = crypto.createHash('sha256').update(buff).digest('hex');
   ```
 
+### 3단계. zlib 명령어
+
+- 디렉토리에서 전체 파일 목록을 탐색하고 각 파일들을 zlib으로 압축해서 저장한다.
+  - zlib으로 압축한 파일들 목록을 출력한다.
+  - 압축된 사이즈도 함께 나오도록 출력한다.
+- node 기본 모듈에 zlib을 활용한다.
+- createReadStream, createWriteStream의 역할?
+  - Node.js Stream 이란 도대체 무엇일까?
+  - [https://jeonghwan-kim.github.io/node/2017/07/03/node-stream-you-need-to-know.html](https://jeonghwan-kim.github.io/node/2017/07/03/node-stream-you-need-to-know.html)
+  - 왜 async/await 사용이 안될까? → Promise가 아니기 때문에
+- 압축하고 나서 압축된 파일들만 탐색해서 사이즈를 출력하도록 짜보기
+  - 압축하는 과정이 끝나기 전에 파일들의 사이즈 계산이 먼저 진행되기 때문에 문제 발생
+  - 압축하는 것이 끝날때까지 await할 수 없을까?
+
+```jsx
+const zlib = async dirPath => {
+	try {
+		const realPath = path.join(os.homedir(), dirPath);
+		const fileList = await fs.promises.readdir(realPath);
+
+		for (const file of fileList) {
+			const source = fs.createReadStream(`${realPath}/${file}`);
+			const destination = fs.createWriteStream(`${realPath}/${file}.z`);
+			source.pipe(gzip.createGzip()).pipe(destination);
+		}
+
+		for (const file of fileList) {
+			const stats = await fs.promises.stat(`${realPath}/${file}.z`);
+			console.log(`${file} (${bytesToSize(stats.size)})`);
+		}
+	} catch (err) {
+		console.log(err);
+	}
+};
+```
+
+- 다음과 같은 코드로 do_Gzip이라는 비동기 함수를 만든 후 await를 걸어 사용해서 해결
+
+```jsx
+const pipe = promisify(pipeline);
+
+async function do_gzip(input, output) {
+	const gzip = zlib.createGzip();
+	const source = fs.createReadStream(input);
+	const destination = fs.createWriteStream(output);
+	await pipe(source, gzip, destination);
+}
+```
+
+- 한 번 더 실행하면 압축안된 파일들만 압축하도록, 이름이 중복되면 어떻게 될까? → .z.z 이런식으로 됨
+
 ## 생각해 볼 점
 
 - git init을 했을때 ./git 이 생기는데 이 녀석은 어디서 온 걸까?
 - 미션에서 구현한 node 프로그램을 다른 사용자의 디렉토리에서도 똑같이 적용할 수 있게 하려면 경로를 어떻게 바꾸어야 할까? → os 모듈 `os.homedir()` 사용하기
   `os.homedir()` 출력시 /Users/silvertae 가 출력되었다!
   단 이 경우 기존 코드에서 `path.resolve` 부분을 `path.join`으로 바꾸어야 한다. 왜냐하면 resolve에서는 오른쪽에서 왼쪽으로 인자들을 읽어가며 ‘/’를 만나면 그 경로를 절대경로로 인식해서 바로 반환하기 때문이다.
+
   ```jsx
   // const realPath = path.resolve(`/Users/silvertae${dirPath}`);
   // 기존 코드를 아래와 같이 변경한다.
@@ -254,6 +306,7 @@ mit list /Work/Masters/
   const realPath = path.resolve(os.homedir(), dirPath);
   // -> /Work/Masters
   ```
+
 - Byte → KB 단위로 바꿔서 출력하려면 어떻게 해야할까?
   [https://aspdotnet.tistory.com/2956](https://aspdotnet.tistory.com/2956) (bytesToSize 함수)
 - 결과에 자꾸 ‘>’ 표시가 첫 줄에 같이 나오는데 없앨수는 없을까?
