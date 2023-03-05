@@ -1,11 +1,11 @@
 const fs = require('fs/promises');
 const path = require('path');
+const os = require('os');
 const crypto = require('crypto');
 
-const hash = async line => {
+const hash = async dirPath => {
 	try {
-		const inputPath = line.split(' ')[2];
-		const realPath = path.resolve(`/Users/silvertae${inputPath}`);
+		const realPath = path.join(os.homedir(), dirPath);
 		const filelist = await fs.readdir(realPath);
 		for (const file of filelist) {
 			const buff = await fs.readFile(`${realPath}/${file}`);
